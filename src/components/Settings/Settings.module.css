@@ -1,0 +1,62 @@
+.settings {
+  padding: 1rem;
+  background-color: var(--settings-bg);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem auto;
+  border: 1px solid var(--border-color);
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buttonGroup button {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.buttonGroup button.active {
+  background-color: var(--accent-color);
+  color: var(--button-hover-text);
+}
+
+.checkboxLabel {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  width: auto;
+  margin: 0;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent-color);
+}

@@ -1,0 +1,40 @@
+.wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.displayArea {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.feedbackArea {
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.answer {
+  font-size: 4rem;
+  font-weight: bold;
+  color: var(--text-color);
+  animation: fadeIn 0.2s ease-in;
+}
+
+.prompt {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
