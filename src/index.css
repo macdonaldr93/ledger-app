@@ -9,6 +9,8 @@
   --accent-color: #000000;
   --button-hover-bg: #000000;
   --button-hover-text: #ffffff;
+  --success-color: #2e7d32;
+  --error-color: #d32f2f;
 
   font-family: var(--font-serif);
   line-height: 1.5;

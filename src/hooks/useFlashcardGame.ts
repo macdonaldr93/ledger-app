@@ -4,6 +4,8 @@ import { getRandomNote } from '../utils/noteUtils';
 
 export function useFlashcardGame(initialSettings: GameSettings) {
   const [settings, setSettings] = useState<GameSettings>(initialSettings);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(true);
+  const [score, setScore] = useState({ correct: 0, total: 0 });
   
   const generateNote = useCallback((currentSettings: GameSettings): { note: Note, clef: Clef } => {
     const clef: Clef = currentSettings.clef === 'both' 
@@ -40,20 +42,41 @@ export function useFlashcardGame(initialSettings: GameSettings) {
     setGameState(prev => ({ ...prev, isAnswerRevealed: true }));
   }, []);
 
+  const markCorrect = useCallback(() => {
+    setScore(prev => ({ correct: prev.correct + 1, total: prev.total + 1 }));
+    nextNote();
+  }, [nextNote]);
+
+  const markIncorrect = useCallback(() => {
+    setScore(prev => ({ ...prev, total: prev.total + 1 }));
+    nextNote();
+  }, [nextNote]);
+
+  const startGame = useCallback(() => {
+    setIsSettingsOpen(false);
+    setScore({ correct: 0, total: 0 });
+    nextNote();
+  }, [nextNote]);
+
+  const resetGame = useCallback(() => {
+    setIsSettingsOpen(true);
+  }, []);
+
   const updateSettings = useCallback((newSettings: Partial<GameSettings>) => {
-    setSettings(prev => {
-      const updated = { ...prev, ...newSettings };
-      // If clef or difficulty changed, might want to generate a new note immediately
-      // but usually we wait for the next note.
-      return updated;
-    });
+    setSettings(prev => ({ ...prev, ...newSettings }));
   }, []);
 
   return {
     ...gameState,
     settings,
+    score,
+    isSettingsOpen,
     nextNote,
     revealAnswer,
+    markCorrect,
+    markIncorrect,
+    startGame,
+    resetGame,
     updateSettings,
   };
 }
