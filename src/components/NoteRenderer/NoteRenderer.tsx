@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Renderer, Stave, StaveNote, Formatter, Voice } from 'vexflow';
+import { Renderer, Stave, StaveNote, Formatter, Voice, Accidental } from 'vexflow';
 import type { Note, Clef } from '../../types/musical';
 import { getStemDirection } from '../../utils/noteUtils';
 import styles from './NoteRenderer.module.css';
@@ -47,7 +47,7 @@ export const NoteRenderer: React.FC<NoteRendererProps> = ({ note, clef }) => {
     });
 
     if (note.accidental) {
-      staveNote.addModifier(new (Renderer.Backends.SVG as any).Accidental(note.accidental));
+      staveNote.addModifier(new Accidental(note.accidental));
     }
 
     // Create a voice in 4/4 and add the note
