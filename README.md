@@ -1,8 +1,8 @@
-# Sight Reader
+# Ledger
 
 A mobile-first Progressive Web App (PWA) for practicing musical sight-reading. Master notes on the treble and bass clefs with a clean, distraction-free serif interface.
 
-[Live Demo](https://macdonaldr93.github.io/sightreader-app/)
+[Live Demo](https://macdonaldr93.github.io/ledger-app/)
 
 ## Features
 
@@ -39,8 +39,8 @@ The app follows standard engraving rules for better learning:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/macdonaldr93/sightreader-app.git
-   cd sightreader-app
+   git clone https://github.com/macdonaldr93/ledger-app.git
+   cd ledger-app
    ```
 
 2. Install dependencies:

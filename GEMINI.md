@@ -1,6 +1,6 @@
-# Gemini Project Log: Sight Reader
+# Gemini Project Log: Ledger
 
-This document tracks the evolution of the Sight Reader project as guided by Gemini CLI.
+This document tracks the evolution of the Ledger project as guided by Gemini CLI.
 
 ## Project Vision
 
@@ -65,4 +65,4 @@ The app uses a custom hook `useFlashcardGame` to separate the "game mechanics" (
 
 ## Deployments
 
-The app is deployed to GitHub Pages at `/sightreader-app/`. The `vite.config.ts` includes the `base` configuration to ensure assets are resolved correctly.
+The app is deployed to GitHub Pages at `/ledger-app/`. The `vite.config.ts` includes the `base` configuration to ensure assets are resolved correctly.

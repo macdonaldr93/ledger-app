@@ -25,7 +25,7 @@ describe('useSettings', () => {
 
   it('should load settings from localStorage if they exist', () => {
     const savedSettings = { ...initialSettings, maxLedgerLines: 3 };
-    localStorage.setItem('sightreader_settings', JSON.stringify(savedSettings));
+    localStorage.setItem('ledger_settings', JSON.stringify(savedSettings));
 
     const { result } = renderHook(() => useSettings(initialSettings));
     expect(result.current.settings.maxLedgerLines).toBe(3);
@@ -37,7 +37,7 @@ describe('useSettings', () => {
       result.current.updateSettings({ maxLedgerLines: 2 });
     });
     
-    const saved = JSON.parse(localStorage.getItem('sightreader_settings') || '{}');
+    const saved = JSON.parse(localStorage.getItem('ledger_settings') || '{}');
     expect(saved.maxLedgerLines).toBe(2);
   });
 

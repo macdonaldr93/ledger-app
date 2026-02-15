@@ -1,6 +1,6 @@
-# Contributing to Sight Reader
+# Contributing to Ledger
 
-Thank you for your interest in improving Sight Reader!
+Thank you for your interest in improving Ledger!
 
 ## Development Workflow
 

@@ -4,15 +4,15 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/sightreader-app/',
+  base: '/ledger-app/',
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'Sight Reader',
-        short_name: 'SightReader',
+        name: 'Ledger',
+        short_name: 'Ledger',
         description: 'Practice musical sight reading with flashcards',
         theme_color: '#ffffff',
         icons: []

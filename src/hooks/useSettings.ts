@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import type { GameSettings } from '../types/musical';
 
-const SETTINGS_KEY = 'sightreader_settings';
+const SETTINGS_KEY = 'ledger_settings';
 
 export function useSettings(initialSettings: GameSettings) {
   const [settings, setSettings] = useState<GameSettings>(() => {
