@@ -11,10 +11,12 @@ export interface VexFlowOptions {
 
 export function useVexFlowRenderer(note: Note, clef: Clef, options: VexFlowOptions = {}) {
   const {
-    height = 180,
+    height = 160,
     stavePadding = 20,
-    staveY = 60,
+    staveY: providedStaveY,
   } = options;
+
+  const staveY = providedStaveY ?? (height / 2 - 16);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(300);
@@ -47,7 +49,7 @@ export function useVexFlowRenderer(note: Note, clef: Clef, options: VexFlowOptio
     const context = renderer.getContext();
 
     const actualStaveWidth = width - stavePadding * 2;
-    const stave = new Stave(stavePadding, staveY, actualStaveWidth);
+    const stave = new Stave(stavePadding, 20, actualStaveWidth);
     stave.addClef(clef);
     stave.setContext(context).draw();
 
