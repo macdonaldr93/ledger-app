@@ -7,6 +7,8 @@ const initialSettings: GameSettings = {
   clef: 'treble',
   maxLedgerLines: 1,
   onlyLedgerLines: false,
+  timeLimitEnabled: false,
+  timeLimitSeconds: 10,
 };
 
 describe('useSettings', () => {

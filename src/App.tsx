@@ -3,6 +3,7 @@ import { useFlashcardGame } from './hooks/useFlashcardGame';
 import { NoteRenderer } from './components/NoteRenderer/NoteRenderer';
 import { InteractionArea } from './components/InteractionArea/InteractionArea';
 import { Settings } from './components/Settings/Settings';
+import { ProgressBar } from './components/ProgressBar/ProgressBar';
 import styles from './App.module.css';
 
 function App() {
@@ -10,12 +11,15 @@ function App() {
     currentNote,
     currentClef,
     isAnswerRevealed,
+    isTimeExpired,
+    timerProgress,
     settings,
     score,
     isSettingsOpen,
     revealAnswer,
     markCorrect,
     markIncorrect,
+    handleTimeoutContinue,
     startGame,
     resetGame,
     updateSettings
@@ -23,6 +27,8 @@ function App() {
     clef: 'treble',
     maxLedgerLines: 1,
     onlyLedgerLines: false,
+    timeLimitEnabled: false,
+    timeLimitSeconds: 10,
   });
 
   const handleTap = () => {
@@ -33,6 +39,10 @@ function App() {
 
   return (
     <div className={styles.app}>
+      <ProgressBar 
+        progress={timerProgress} 
+        visible={settings.timeLimitEnabled && !isSettingsOpen && !isAnswerRevealed} 
+      />
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.score}>
@@ -47,10 +57,12 @@ function App() {
       <main className={styles.main}>
         <InteractionArea
           isAnswerRevealed={isAnswerRevealed}
+          isTimeExpired={isTimeExpired}
           answer={currentNote.name}
           onTap={handleTap}
           onCorrect={markCorrect}
           onIncorrect={markIncorrect}
+          onTimeoutContinue={handleTimeoutContinue}
         >
           <NoteRenderer note={currentNote} clef={currentClef} />
         </InteractionArea>

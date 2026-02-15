@@ -7,6 +7,8 @@ const initialSettings: GameSettings = {
   clef: 'treble',
   maxLedgerLines: 1,
   onlyLedgerLines: false,
+  timeLimitEnabled: false,
+  timeLimitSeconds: 10,
 };
 
 describe('useFlashcardGame', () => {
@@ -37,6 +39,17 @@ describe('useFlashcardGame', () => {
     });
     
     expect(result.current.score).toEqual({ correct: 1, total: 2 });
+  });
+
+  it('should handle timeout continue', () => {
+    const { result } = renderHook(() => useFlashcardGame(initialSettings));
+    
+    act(() => {
+      result.current.startGame();
+      result.current.handleTimeoutContinue();
+    });
+    
+    expect(result.current.score).toEqual({ correct: 0, total: 1 });
   });
 
   it('should reset game to settings screen', () => {

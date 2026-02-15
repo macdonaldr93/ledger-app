@@ -5,6 +5,7 @@
   padding: var(--spacing-lg);
   max-width: 600px;
   margin: 0 auto;
+  position: relative;
 }
 
 .header {

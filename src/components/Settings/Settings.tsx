@@ -62,6 +62,38 @@ export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onStart,
           />
         </div>
 
+        <div className={styles.field}>
+          <label className={styles.label}>Time Limit</label>
+          <div className={styles.buttonGroup}>
+            <button
+              className={!settings.timeLimitEnabled ? styles.active : ''}
+              onClick={() => onUpdate({ timeLimitEnabled: false })}
+            >
+              Off
+            </button>
+            <button
+              className={settings.timeLimitEnabled ? styles.active : ''}
+              onClick={() => onUpdate({ timeLimitEnabled: true })}
+            >
+              On
+            </button>
+          </div>
+        </div>
+
+        {settings.timeLimitEnabled && (
+          <div className={styles.field}>
+            <label className={styles.label}>Seconds: {settings.timeLimitSeconds}</label>
+            <input
+              type="range"
+              min="1"
+              max="30"
+              value={settings.timeLimitSeconds}
+              onChange={(e) => onUpdate({ timeLimitSeconds: parseInt(e.target.value) })}
+              className={styles.range}
+            />
+          </div>
+        )}
+
         <button className={styles.startButton} onClick={onStart}>
           Start Game
         </button>

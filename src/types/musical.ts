@@ -12,4 +12,6 @@ export interface GameSettings {
   clef: Clef | 'both';
   maxLedgerLines: number;
   onlyLedgerLines: boolean;
+  timeLimitEnabled: boolean;
+  timeLimitSeconds: number;
 }
