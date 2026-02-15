@@ -51,6 +51,15 @@ A distraction-free, high-accuracy musical flashcard app that works flawlessly on
 - Optimized SEO meta tags and PWA manifest for better discoverability and "app-like" feel.
 - Renamed the project to **Ledger** to reflect its focused purpose on ledger line mastery.
 
+### 8. Modern PWA & Architectural Decoupling
+
+- Migrated to `vite-plugin-pwa` for professional-grade manifest and service worker management.
+- Decoupled `NoteRenderer` from `GameControls` (formerly `InteractionArea`) to allow independent interaction and clearer layout.
+- Renamed `GameHeader` to `Scoreboard` to more accurately reflect its utility.
+- Extracted VexFlow rendering logic into a specialized `useVexFlowRenderer` hook.
+- Achieved >97% test coverage and standardized on Vitest globals for a better developer experience.
+- Refined the progress bar with CSS-driven transitions for better performance.
+
 ## Architectural Notes
 
 ### Screen Constraints
