@@ -5,6 +5,7 @@
   margin: 0 auto;
   max-width: 560px;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: var(--spacing-md) var(--spacing-lg);
   position: relative;
 }
