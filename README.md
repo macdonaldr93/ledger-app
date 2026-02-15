@@ -7,10 +7,10 @@ A mobile-first Progressive Web App (PWA) for practicing musical sight-reading. M
 ## Features
 
 - **Treble & Bass Clefs**: Practice on either clef or both simultaneously.
-- **Scoring System**: Track your progress with a "Right/Wrong" scoring system.
-- **Timed Practice**: Optional session timer to practice under pressure.
+- **Scoring System**: Track your progress with a Scoreboard that keeps a tally of your session.
+- **Timed Practice**: Optional session timer with a smooth, high-visibility progress bar.
 - **Persistent Settings**: Your preferences (clef, difficulty, time limit) are saved automatically between sessions.
-- **Modal Settings**: A distraction-free setup screen that stays out of the way during practice.
+- **Dropdown Settings**: A space-efficient setup menu that stays out of the way during practice.
 - **Customizable Difficulty**: Adjust the number of ledger lines (0 to 6) to challenge your reading.
 - **Ledger Line Focus**: Toggle "Only Ledger Lines" mode to specifically target notes outside the standard staff.
 - **Professional Notation**: Powered by VexFlow 5 for accurate musical rendering.
