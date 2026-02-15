@@ -155,6 +155,9 @@ export function Settings({
           )}
         </div>
       </div>
+      <footer className={styles.footer}>
+        <span>Made with ❤️ for Jenn</span>
+      </footer>
     </div>
   );
 }
