@@ -63,7 +63,10 @@ export function isLedgerLine(step: number, clef: Clef): boolean {
   }
 }
 
-export function getStemDirection(note: Pick<Note, 'diatonicStep' | 'name' | 'octave'>, clef: Clef): 'up' | 'down' {
+export function getStemDirection(
+  note: Pick<Note, 'diatonicStep' | 'name' | 'octave'>,
+  clef: Clef
+): 'up' | 'down' {
   const step = 'diatonicStep' in note ? (note.diatonicStep as number) : getDiatonicStep(note);
   const middleLineStep = clef === 'treble' ? 6 : -6;
   return step >= middleLineStep ? 'down' : 'up';

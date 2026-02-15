@@ -7,15 +7,21 @@ export function useReviewMode() {
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [isReviewFinished, setIsReviewFinished] = useState(false);
 
-  const canReview = useMemo(() => incorrectNotes.length > 0 || isReviewMode, [incorrectNotes, isReviewMode]);
+  const canReview = useMemo(
+    () => incorrectNotes.length > 0 || isReviewMode,
+    [incorrectNotes, isReviewMode]
+  );
   const reviewQueueSize = useMemo(() => reviewQueue.length, [reviewQueue]);
-  const currentReviewNote = useMemo(() => (reviewQueue.length > 0 ? reviewQueue[0] : null), [reviewQueue]);
+  const currentReviewNote = useMemo(
+    () => (reviewQueue.length > 0 ? reviewQueue[0] : null),
+    [reviewQueue]
+  );
 
   const addIncorrectNote = useCallback((note: Note, clef: Clef) => {
     setIsReviewFinished(false);
-    setIncorrectNotes(prev => {
+    setIncorrectNotes((prev) => {
       const alreadyExists = prev.some(
-        n => n.note.name === note.name && n.note.octave === note.octave && n.clef === clef
+        (n) => n.note.name === note.name && n.note.octave === note.octave && n.clef === clef
       );
       if (alreadyExists) return prev;
       return [...prev, { note, clef }];
@@ -37,23 +43,23 @@ export function useReviewMode() {
   const moveToNext = useCallback(() => {
     const newQueue = reviewQueue.slice(1);
     setReviewQueue(newQueue);
-    
+
     if (newQueue.length === 0) {
       setIsReviewMode(false);
       setIsReviewFinished(true);
       return null;
     }
-    
+
     return newQueue[0];
   }, [reviewQueue]);
 
   const requeueCurrent = useCallback(() => {
     if (reviewQueue.length === 0) return null;
-    
+
     const current = reviewQueue[0];
     const newQueue = [...reviewQueue.slice(1), current];
     setReviewQueue(newQueue);
-    
+
     return newQueue[0];
   }, [reviewQueue]);
 
@@ -65,7 +71,7 @@ export function useReviewMode() {
   }, []);
 
   const stopReview = useCallback(() => {
-    setIncorrectNotes(prev => [...prev, ...reviewQueue]);
+    setIncorrectNotes((prev) => [...prev, ...reviewQueue]);
     setReviewQueue([]);
     setIsReviewMode(false);
     setIsReviewFinished(false);

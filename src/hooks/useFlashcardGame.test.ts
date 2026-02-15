@@ -20,51 +20,51 @@ describe('useFlashcardGame', () => {
 
   it('should start game and update score', () => {
     const { result } = renderHook(() => useFlashcardGame(initialSettings));
-    
+
     act(() => {
       result.current.startGame();
     });
-    
+
     expect(result.current.isSettingsOpen).toBe(false);
-    
+
     act(() => {
       result.current.markCorrect();
     });
-    
+
     expect(result.current.score).toEqual({ correct: 1, total: 1 });
-    
+
     act(() => {
       result.current.markIncorrect();
     });
-    
+
     expect(result.current.score).toEqual({ correct: 1, total: 2 });
   });
 
   it('should handle timeout continue', () => {
     const { result } = renderHook(() => useFlashcardGame(initialSettings));
-    
+
     act(() => {
       result.current.startGame();
       result.current.handleTimeoutContinue();
     });
-    
+
     expect(result.current.score).toEqual({ correct: 0, total: 1 });
   });
 
   it('should reset game to settings screen', () => {
     const { result } = renderHook(() => useFlashcardGame(initialSettings));
-    
+
     act(() => {
       result.current.startGame();
       result.current.resetGame();
     });
-    
+
     expect(result.current.isSettingsOpen).toBe(true);
   });
 
   it('should handle review mode logic', () => {
     const { result } = renderHook(() => useFlashcardGame(initialSettings));
-    
+
     act(() => {
       result.current.startGame();
     });
@@ -120,7 +120,7 @@ describe('useFlashcardGame', () => {
 
   it('should handle multiple notes in review mode', () => {
     const { result } = renderHook(() => useFlashcardGame(initialSettings));
-    
+
     act(() => {
       result.current.startGame();
     });

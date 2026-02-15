@@ -8,7 +8,9 @@ import { NoteRendererSkeleton } from './components/NoteRenderer/NoteRendererSkel
 import { useFlashcardGame } from './hooks/useFlashcardGame';
 import styles from './App.module.css';
 
-const NoteRenderer = React.lazy(() => import('./components/NoteRenderer/NoteRenderer').then(m => ({ default: m.NoteRenderer })));
+const NoteRenderer = React.lazy(() =>
+  import('./components/NoteRenderer/NoteRenderer').then((m) => ({ default: m.NoteRenderer }))
+);
 const Confetti = React.lazy(() => import('react-confetti'));
 
 function App() {
@@ -61,61 +63,60 @@ function App() {
   };
 
   return (
-    <div className={styles.app}>
+    <>
       <Suspense fallback={null}>
         {isReviewFinished && (
           <Confetti
             width={width}
             height={height}
             recycle={false}
-            numberOfPieces={200}
-            initialVelocityY={7}
-
+            numberOfPieces={500}
+            gravity={0.3}
+            initialVelocityY={25}
+            style={{ position: 'fixed', top: 0, left: 0, zIndex: 1000, pointerEvents: 'none' }}
           />
         )}
       </Suspense>
-      <ProgressBar
-        progress={timerProgress}
-        isRunning={timerIsRunning}
-        timeLeft={timerTimeLeft}
-        visible={settings.timeLimitEnabled && !isSettingsOpen && !isAnswerRevealed}
-      />
-
-      <main className={styles.main}>
-        <div className={styles.topRow}>
-          <Scoreboard
-            score={score}
-            onReset={resetGame}
-            canReview={canReview}
-            isReviewMode={isReviewMode}
-            onReview={toggleReview}
-          />
-        </div>
-        <Suspense fallback={<NoteRendererSkeleton />}>
-          <NoteRenderer
-            note={currentNote}
-            clef={currentClef}
-            onClick={handleTap}
-          />
-        </Suspense>
-        <GameControls
-          isAnswerRevealed={isAnswerRevealed}
-          isTimeExpired={isTimeExpired}
-          answer={currentNote.name}
-          onTap={handleTap}
-          onCorrect={markCorrect}
-          onIncorrect={markIncorrect}
-          onTimeoutContinue={handleTimeoutContinue}
+      <div className={styles.app}>
+        <ProgressBar
+          progress={timerProgress}
+          isRunning={timerIsRunning}
+          timeLeft={timerTimeLeft}
+          visible={settings.timeLimitEnabled && !isSettingsOpen && !isAnswerRevealed}
         />
-      </main>
 
-      <Settings
-        settings={settings}
-        onUpdate={updateSettings}
-        onStart={startGame}
-        isOpen={isSettingsOpen}
-      />
-    </div>
+        <main className={styles.main}>
+          <div className={styles.topRow}>
+            <Scoreboard
+              score={score}
+              onReset={resetGame}
+              canReview={canReview}
+              isReviewMode={isReviewMode}
+              onReview={toggleReview}
+            />
+          </div>
+          <Suspense fallback={<NoteRendererSkeleton />}>
+            <NoteRenderer note={currentNote} clef={currentClef} onClick={handleTap} />
+          </Suspense>
+          <GameControls
+            isAnswerRevealed={isAnswerRevealed}
+            isTimeExpired={isTimeExpired}
+            answer={currentNote.name}
+            onTap={handleTap}
+            onCorrect={markCorrect}
+            onIncorrect={markIncorrect}
+            onTimeoutContinue={handleTimeoutContinue}
+          />
+        </main>
+
+        <Settings
+          settings={settings}
+          onUpdate={updateSettings}
+          onStart={startGame}
+          isOpen={isSettingsOpen}
+        />
+      </div>
+    </>
   );
 }
 

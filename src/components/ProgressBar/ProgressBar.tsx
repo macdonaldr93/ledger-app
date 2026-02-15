@@ -11,22 +11,19 @@ interface ProgressBarProps {
 export function ProgressBar({ progress, isRunning, timeLeft, visible }: ProgressBarProps) {
   if (!visible) return <div className={styles.container} />;
 
-  const style: React.CSSProperties = isRunning 
-    ? { 
-        transform: 'scaleX(0)', 
-        transition: `transform ${timeLeft}s linear` 
+  const style: React.CSSProperties = isRunning
+    ? {
+        transform: 'scaleX(0)',
+        transition: `transform ${timeLeft}s linear`,
       }
-    : { 
-        transform: `scaleX(${progress})`, 
-        transition: 'none' 
+    : {
+        transform: `scaleX(${progress})`,
+        transition: 'none',
       };
 
   return (
     <div className={styles.container}>
-      <div 
-        className={styles.bar} 
-        style={style} 
-      />
+      <div className={styles.bar} style={style} />
     </div>
   );
 }

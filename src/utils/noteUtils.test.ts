@@ -1,4 +1,12 @@
-import { getDiatonicStep, fromDiatonicStep, getRandomNote, getStemDirection, isLedgerLine, formatNoteName, getNoteRange } from './noteUtils';
+import {
+  getDiatonicStep,
+  fromDiatonicStep,
+  getRandomNote,
+  getStemDirection,
+  isLedgerLine,
+  formatNoteName,
+  getNoteRange,
+} from './noteUtils';
 
 describe('noteUtils', () => {
   it('should correctly calculate diatonic step', () => {

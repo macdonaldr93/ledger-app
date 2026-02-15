@@ -30,7 +30,9 @@
   justify-content: center;
   cursor: pointer;
   color: var(--text-color);
-  transition: transform 0.2s, border-color 0.2s;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
 }
 
 .actionButton:active,
@@ -45,6 +47,6 @@
   border-color: var(--border-color);
 }
 
-.actionButton[aria-label="Reset game"]:hover {
+.actionButton[aria-label='Reset game']:hover {
   transform: rotate(-180deg);
 }

@@ -13,14 +13,14 @@ interface GameControlsProps {
   onTimeoutContinue?: () => void;
 }
 
-export function GameControls({ 
-  isAnswerRevealed, 
+export function GameControls({
+  isAnswerRevealed,
   isTimeExpired,
-  answer, 
+  answer,
   onTap,
   onCorrect,
   onIncorrect,
-  onTimeoutContinue
+  onTimeoutContinue,
 }: GameControlsProps) {
   const handleAction = (e: React.MouseEvent, action: () => void) => {
     e.stopPropagation();
@@ -34,10 +34,10 @@ export function GameControls({
           <div className={styles.feedbackControls}>
             {isTimeExpired ? (
               <>
-                <div style={{ width: 48 }} /> 
+                <div style={{ width: 48 }} />
                 <div className={styles.answer}>{answer}</div>
-                <button 
-                  className={clsx(styles.feedbackButton, styles.right)} 
+                <button
+                  className={clsx(styles.feedbackButton, styles.right)}
                   onClick={(e) => handleAction(e, onTimeoutContinue || (() => {}))}
                   aria-label="Continue"
                 >
@@ -46,16 +46,16 @@ export function GameControls({
               </>
             ) : (
               <>
-                <button 
-                  className={clsx(styles.feedbackButton, styles.wrong)} 
+                <button
+                  className={clsx(styles.feedbackButton, styles.wrong)}
                   onClick={(e) => handleAction(e, onIncorrect)}
                   aria-label="Incorrect"
                 >
                   <X size={40} />
                 </button>
                 <div className={styles.answer}>{answer}</div>
-                <button 
-                  className={clsx(styles.feedbackButton, styles.right)} 
+                <button
+                  className={clsx(styles.feedbackButton, styles.right)}
                   onClick={(e) => handleAction(e, onCorrect)}
                   aria-label="Correct"
                 >

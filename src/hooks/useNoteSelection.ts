@@ -3,14 +3,17 @@ import type { Clef, Note, GameSettings } from '../types/musical';
 import { getRandomNote } from '../utils/noteUtils';
 
 export function useNoteSelection(settings: GameSettings) {
-  const generateNote = useCallback((currentSettings: GameSettings): { note: Note, clef: Clef } => {
-    const clef: Clef = currentSettings.clef === 'both' 
-      ? (Math.random() > 0.5 ? 'treble' : 'bass') 
-      : currentSettings.clef;
-    
+  const generateNote = useCallback((currentSettings: GameSettings): { note: Note; clef: Clef } => {
+    const clef: Clef =
+      currentSettings.clef === 'both'
+        ? Math.random() > 0.5
+          ? 'treble'
+          : 'bass'
+        : currentSettings.clef;
+
     return {
       note: getRandomNote(clef, currentSettings.maxLedgerLines, currentSettings.onlyLedgerLines),
-      clef
+      clef,
     };
   }, []);
 

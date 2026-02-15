@@ -10,13 +10,9 @@ export interface VexFlowOptions {
 }
 
 export function useVexFlowRenderer(note: Note, clef: Clef, options: VexFlowOptions = {}) {
-  const {
-    height = 160,
-    stavePadding = 20,
-    staveY: providedStaveY,
-  } = options;
+  const { height = 160, stavePadding = 20, staveY: providedStaveY } = options;
 
-  const staveY = providedStaveY ?? (height / 2 - 16);
+  const staveY = providedStaveY ?? height / 2 - 16;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(300);

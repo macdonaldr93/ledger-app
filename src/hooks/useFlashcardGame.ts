@@ -7,11 +7,13 @@ import { useTimer } from './useTimer';
 import { useReviewMode } from './useReviewMode';
 
 export function useFlashcardGame(initialSettings: GameSettings) {
-  const { settings, isSettingsOpen, updateSettings, openSettings, closeSettings } = useSettings(initialSettings);
+  const { settings, isSettingsOpen, updateSettings, openSettings, closeSettings } =
+    useSettings(initialSettings);
   const { score, incrementCorrect, incrementTotal, resetScore } = useScore();
-  const { currentNote, currentClef, isAnswerRevealed, nextNote, setNote, revealAnswer } = useNoteSelection(settings);
+  const { currentNote, currentClef, isAnswerRevealed, nextNote, setNote, revealAnswer } =
+    useNoteSelection(settings);
   const [isTimeExpired, setIsTimeExpired] = useState(false);
-  
+
   const {
     isReviewMode,
     isReviewFinished,
@@ -32,7 +34,12 @@ export function useFlashcardGame(initialSettings: GameSettings) {
     setIsTimeExpired(true);
   }, [revealAnswer]);
 
-  const { progress, isRunning, timeLeft, reset: resetTimer } = useTimer(
+  const {
+    progress,
+    isRunning,
+    timeLeft,
+    reset: resetTimer,
+  } = useTimer(
     settings.timeLimitEnabled && !isAnswerRevealed && !isSettingsOpen,
     settings.timeLimitSeconds,
     handleTimeout
@@ -77,7 +84,17 @@ export function useFlashcardGame(initialSettings: GameSettings) {
       incrementTotal();
       handleNextNote();
     }
-  }, [isReviewMode, requeueCurrent, currentNote, currentClef, addIncorrectNote, incrementTotal, handleNextNote, setNote, resetTimer]);
+  }, [
+    isReviewMode,
+    requeueCurrent,
+    currentNote,
+    currentClef,
+    addIncorrectNote,
+    incrementTotal,
+    handleNextNote,
+    setNote,
+    resetTimer,
+  ]);
 
   const handleTimeoutContinue = useCallback(() => {
     markIncorrect();

@@ -17,9 +17,16 @@ export function Settings({ settings, onUpdate, onStart, isOpen }: SettingsProps)
   if (!isOpen) return null;
 
   return (
-    <div className={styles.modalOverlay} role="dialog" aria-labelledby="modal-title" aria-modal="true">
+    <div
+      className={styles.modalOverlay}
+      role="dialog"
+      aria-labelledby="modal-title"
+      aria-modal="true"
+    >
       <div className={styles.modalContent}>
-        <h1 id="modal-title" className={styles.title}>Ledger</h1>
+        <h1 id="modal-title" className={styles.title}>
+          Ledger
+        </h1>
 
         <button className={styles.startButton} onClick={onStart}>
           Start Game
@@ -91,7 +98,8 @@ export function Settings({ settings, onUpdate, onStart, isOpen }: SettingsProps)
 
               <div className={styles.field}>
                 <label className={styles.label} id="time-limit-label">
-                  Time Limit: {settings.timeLimitEnabled ? `${settings.timeLimitSeconds} seconds` : 'Off'}
+                  Time Limit:{' '}
+                  {settings.timeLimitEnabled ? `${settings.timeLimitSeconds} seconds` : 'Off'}
                 </label>
                 <input
                   type="range"

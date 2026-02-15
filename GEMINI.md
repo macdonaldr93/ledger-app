@@ -79,6 +79,7 @@ A distraction-free, high-accuracy musical flashcard app that works flawlessly on
 
 - Standardized conditional class management by integrating `clsx` across all components.
 - Performed a codebase-wide cleanup of unnecessary comments and dead code to maintain a high signal-to-noise ratio.
+- Standardized code formatting by adding a `fmt` script using Prettier and updated `CONTRIBUTING.md` accordingly.
 - Updated developer documentation (`CONTRIBUTING.md`) to reflect the adoption of `clsx`.
 
 ## Architectural Notes

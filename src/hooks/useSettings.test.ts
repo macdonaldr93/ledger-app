@@ -44,7 +44,7 @@ describe('useSettings', () => {
     act(() => {
       result.current.updateSettings({ maxLedgerLines: 2 });
     });
-    
+
     const saved = JSON.parse(localStorage.getItem('ledger_settings') || '{}');
     expect(saved.maxLedgerLines).toBe(2);
   });

@@ -21,7 +21,7 @@ export function useTimer(enabled: boolean, durationSeconds: number, onTimeout: (
   useEffect(() => {
     if (isActuallyRunning) {
       startTimeRef.current = performance.now();
-      
+
       timeoutRef.current = window.setTimeout(() => {
         setTimeLeft(0);
         onTimeoutRef.current();
