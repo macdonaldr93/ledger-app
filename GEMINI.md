@@ -45,7 +45,18 @@ A distraction-free, high-accuracy musical flashcard app that works flawlessly on
 - Implemented settings persistence using `localStorage` to ensure user preferences (clef, difficulty, ledger lines) survive page reloads.
 - Refined the settings UI for better clarity and touch-friendliness on mobile.
 
+### 7. UI Refinement & SEO
+
+- Migrated settings from a modal to a more space-efficient dropdown/popover menu.
+- Optimized SEO meta tags and PWA manifest for better discoverability and "app-like" feel.
+- Renamed the project to **Ledger** to reflect its focused purpose on ledger line mastery.
+
 ## Architectural Notes
+
+### Screen Constraints
+
+- **Minimum Supported Size**: 352x339px (specifically targeting the Samsung Z-Flip 6 front cover display).
+- **Responsive Strategy**: Fluid layouts using Flexbox/CSS Grid to ensure notation remains legible even on micro-displays.
 
 ### Diatonic Step System
 
