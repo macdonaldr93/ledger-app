@@ -28,18 +28,20 @@ export function GameControls({
   };
 
   return (
-    <div className={styles.wrapper} onClick={onTap}>
+    <div className={styles.wrapper}>
       <div className={styles.feedbackArea}>
         {isAnswerRevealed ? (
           <div className={styles.feedbackControls}>
             {isTimeExpired ? (
               <>
                 <div style={{ width: 48 }} />
-                <div className={styles.answer}>{answer}</div>
+                <div className={styles.answer} aria-live="polite">
+                  {answer}
+                </div>
                 <button
                   className={clsx(styles.feedbackButton, styles.right)}
                   onClick={(e) => handleAction(e, onTimeoutContinue || (() => {}))}
-                  aria-label="Continue"
+                  aria-label={`Correct answer is ${answer}. Continue to next note.`}
                 >
                   <ArrowRight size={40} />
                 </button>
@@ -49,15 +51,17 @@ export function GameControls({
                 <button
                   className={clsx(styles.feedbackButton, styles.wrong)}
                   onClick={(e) => handleAction(e, onIncorrect)}
-                  aria-label="Incorrect"
+                  aria-label="Mark incorrect and move to next"
                 >
                   <X size={40} />
                 </button>
-                <div className={styles.answer}>{answer}</div>
+                <div className={styles.answer} aria-live="polite">
+                  {answer}
+                </div>
                 <button
                   className={clsx(styles.feedbackButton, styles.right)}
                   onClick={(e) => handleAction(e, onCorrect)}
-                  aria-label="Correct"
+                  aria-label="Mark correct and move to next"
                 >
                   <Check size={40} />
                 </button>
@@ -65,7 +69,13 @@ export function GameControls({
             )}
           </div>
         ) : (
-          <div className={styles.prompt}>Tap to reveal</div>
+          <button
+            className={styles.promptButton}
+            onClick={onTap}
+            aria-label="Reveal answer"
+          >
+            Tap to reveal
+          </button>
         )}
       </div>
     </div>

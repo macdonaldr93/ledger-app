@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocalStorage, useInterval } from 'react-use';
 import { format, startOfWeek, isAfter, parseISO, isSameDay } from 'date-fns';
 
@@ -6,15 +6,17 @@ const STORAGE_KEY = 'ledger-practice-data';
 
 export function usePracticeTracker(isActive: boolean) {
   const [practiceData, setPracticeData] = useLocalStorage<Record<string, number>>(STORAGE_KEY, {});
-  const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
+  const sessionStartTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (isActive) {
-      setSessionStartTime(Date.now());
+      if (sessionStartTimeRef.current === null) {
+        sessionStartTimeRef.current = Date.now();
+      }
     } else {
-      if (sessionStartTime) {
+      if (sessionStartTimeRef.current !== null) {
         const now = Date.now();
-        const elapsedSeconds = Math.floor((now - sessionStartTime) / 1000);
+        const elapsedSeconds = Math.floor((now - sessionStartTimeRef.current) / 1000);
         const today = format(new Date(), 'yyyy-MM-dd');
 
         if (elapsedSeconds > 0) {
@@ -23,16 +25,16 @@ export function usePracticeTracker(isActive: boolean) {
             [today]: (prev[today] || 0) + elapsedSeconds,
           }));
         }
-        setSessionStartTime(null);
+        sessionStartTimeRef.current = null;
       }
     }
-  }, [isActive]);
+  }, [isActive, setPracticeData]);
 
   useInterval(
     () => {
-      if (isActive && sessionStartTime) {
+      if (isActive && sessionStartTimeRef.current !== null) {
         const now = Date.now();
-        const elapsedSeconds = Math.floor((now - sessionStartTime) / 1000);
+        const elapsedSeconds = Math.floor((now - sessionStartTimeRef.current) / 1000);
         const today = format(new Date(), 'yyyy-MM-dd');
 
         if (elapsedSeconds > 0) {
@@ -40,7 +42,7 @@ export function usePracticeTracker(isActive: boolean) {
             ...prev,
             [today]: (prev[today] || 0) + elapsedSeconds,
           }));
-          setSessionStartTime(now);
+          sessionStartTimeRef.current = now;
         }
       }
     },

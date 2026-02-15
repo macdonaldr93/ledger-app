@@ -12,8 +12,12 @@ export function NoteRenderer({ note, clef, onClick, ...options }: NoteRendererPr
   const { containerRef } = useVexFlowRenderer(note, clef, options);
 
   return (
-    <div className={styles.container} onClick={onClick}>
-      <div ref={containerRef} className={styles.renderer}></div>
-    </div>
+    <button
+      className={styles.container}
+      onClick={onClick}
+      aria-label="Music notation area. Click to reveal answer."
+    >
+      <div ref={containerRef} className={styles.renderer} aria-hidden="true"></div>
+    </button>
   );
 }

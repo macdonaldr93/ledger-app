@@ -66,8 +66,8 @@ export function Settings({
 
           {isSettingsExpanded && (
             <div id="settings-content" className={styles.settingsContent}>
-              <div className={styles.field}>
-                <label className={styles.label}>Clef</label>
+              <fieldset className={styles.field}>
+                <legend className={styles.label}>Clef</legend>
                 <div className={styles.buttonGroup}>
                   {(['treble', 'bass', 'both'] as const).map((c) => (
                     <button
@@ -80,10 +80,10 @@ export function Settings({
                     </button>
                   ))}
                 </div>
-              </div>
+              </fieldset>
 
-              <div className={styles.field}>
-                <label className={styles.label}>Notes</label>
+              <fieldset className={styles.field}>
+                <legend className={styles.label}>Notes</legend>
                 <div className={styles.buttonGroup}>
                   <button
                     className={clsx({ [styles.active]: !settings.onlyLedgerLines })}
@@ -100,44 +100,42 @@ export function Settings({
                     Ledger Lines
                   </button>
                 </div>
-              </div>
+              </fieldset>
 
               <div className={styles.field}>
-                <label className={styles.label} id="ledger-lines-label">
+                <label className={styles.label}>
                   Max Ledger Lines: {settings.maxLedgerLines}
+                  <input
+                    type="range"
+                    min="0"
+                    max="6"
+                    value={settings.maxLedgerLines}
+                    onChange={(e) => onUpdate({ maxLedgerLines: parseInt(e.target.value) })}
+                    className={styles.range}
+                  />
                 </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="6"
-                  value={settings.maxLedgerLines}
-                  onChange={(e) => onUpdate({ maxLedgerLines: parseInt(e.target.value) })}
-                  className={styles.range}
-                  aria-labelledby="ledger-lines-label"
-                />
               </div>
 
               <div className={styles.field}>
-                <label className={styles.label} id="time-limit-label">
+                <label className={styles.label}>
                   Time Limit:{' '}
                   {settings.timeLimitEnabled ? `${settings.timeLimitSeconds} seconds` : 'Off'}
+                  <input
+                    type="range"
+                    min="1"
+                    max="31"
+                    value={settings.timeLimitEnabled ? settings.timeLimitSeconds : 31}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value);
+                      if (val === 31) {
+                        onUpdate({ timeLimitEnabled: false });
+                      } else {
+                        onUpdate({ timeLimitEnabled: true, timeLimitSeconds: val });
+                      }
+                    }}
+                    className={styles.range}
+                  />
                 </label>
-                <input
-                  type="range"
-                  min="1"
-                  max="31"
-                  value={settings.timeLimitEnabled ? settings.timeLimitSeconds : 31}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value);
-                    if (val === 31) {
-                      onUpdate({ timeLimitEnabled: false });
-                    } else {
-                      onUpdate({ timeLimitEnabled: true, timeLimitSeconds: val });
-                    }
-                  }}
-                  className={styles.range}
-                  aria-labelledby="time-limit-label"
-                />
               </div>
             </div>
           )}

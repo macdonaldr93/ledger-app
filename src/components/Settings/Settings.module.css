@@ -119,6 +119,8 @@
 
 .field {
   margin-bottom: var(--spacing-2xl);
+  border: none;
+  padding: 0;
 }
 
 .label {
@@ -126,6 +128,8 @@
   margin-bottom: var(--spacing-sm);
   font-weight: normal;
   font-size: var(--font-size-md);
+  padding: 0;
+  color: inherit;
 }
 
 .buttonGroup {
