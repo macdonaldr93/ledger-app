@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import type { GameSettings } from '../../types/musical';
 import styles from './Settings.module.css';
 
@@ -10,93 +11,107 @@ interface SettingsProps {
 }
 
 export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onStart, isOpen }) => {
+  const [isSettingsExpanded, setIsSettingsExpanded] = useState(false);
+
   if (!isOpen) return null;
 
   return (
-    <div className={styles.modalOverlay}>
+    <div className={styles.modalOverlay} role="dialog" aria-labelledby="modal-title" aria-modal="true">
       <div className={styles.modalContent}>
-        <h1 className={styles.title}>Ledger</h1>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Clef</label>
-          <div className={styles.buttonGroup}>
-            {(['treble', 'bass', 'both'] as const).map((c) => (
-              <button
-                key={c}
-                className={settings.clef === c ? styles.active : ''}
-                onClick={() => onUpdate({ clef: c })}
-              >
-                {c.charAt(0).toUpperCase() + c.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Notes</label>
-          <div className={styles.buttonGroup}>
-            <button
-              className={!settings.onlyLedgerLines ? styles.active : ''}
-              onClick={() => onUpdate({ onlyLedgerLines: false })}
-            >
-              All
-            </button>
-            <button
-              className={settings.onlyLedgerLines ? styles.active : ''}
-              onClick={() => onUpdate({ onlyLedgerLines: true })}
-            >
-              Ledger Lines
-            </button>
-          </div>
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Max Ledger Lines: {settings.maxLedgerLines}</label>
-          <input
-            type="range"
-            min="0"
-            max="6"
-            value={settings.maxLedgerLines}
-            onChange={(e) => onUpdate({ maxLedgerLines: parseInt(e.target.value) })}
-            className={styles.range}
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Time Limit</label>
-          <div className={styles.buttonGroup}>
-            <button
-              className={!settings.timeLimitEnabled ? styles.active : ''}
-              onClick={() => onUpdate({ timeLimitEnabled: false })}
-            >
-              Off
-            </button>
-            <button
-              className={settings.timeLimitEnabled ? styles.active : ''}
-              onClick={() => onUpdate({ timeLimitEnabled: true })}
-            >
-              On
-            </button>
-          </div>
-        </div>
-
-        {settings.timeLimitEnabled && (
-          <div className={styles.field}>
-            <label className={styles.label}>Seconds: {settings.timeLimitSeconds}</label>
-            <input
-              type="range"
-              min="1"
-              max="30"
-              value={settings.timeLimitSeconds}
-              onChange={(e) => onUpdate({ timeLimitSeconds: parseInt(e.target.value) })}
-              className={styles.range}
-            />
-          </div>
-        )}
+        <h1 id="modal-title" className={styles.title}>Ledger</h1>
 
         <button className={styles.startButton} onClick={onStart}>
           Start Game
         </button>
+
+        <div className={styles.dropdownContainer}>
+          <button
+            className={styles.dropdownHeader}
+            onClick={() => setIsSettingsExpanded(!isSettingsExpanded)}
+            aria-expanded={isSettingsExpanded}
+            aria-controls="settings-content"
+          >
+            <span>Settings</span>
+            {isSettingsExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </button>
+
+          {isSettingsExpanded && (
+            <div id="settings-content" className={styles.settingsContent}>
+              <div className={styles.field}>
+                <label className={styles.label}>Clef</label>
+                <div className={styles.buttonGroup}>
+                  {(['treble', 'bass', 'both'] as const).map((c) => (
+                    <button
+                      key={c}
+                      className={settings.clef === c ? styles.active : ''}
+                      onClick={() => onUpdate({ clef: c })}
+                      aria-pressed={settings.clef === c}
+                    >
+                      {c.charAt(0).toUpperCase() + c.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>Notes</label>
+                <div className={styles.buttonGroup}>
+                  <button
+                    className={!settings.onlyLedgerLines ? styles.active : ''}
+                    onClick={() => onUpdate({ onlyLedgerLines: false })}
+                    aria-pressed={!settings.onlyLedgerLines}
+                  >
+                    All
+                  </button>
+                  <button
+                    className={settings.onlyLedgerLines ? styles.active : ''}
+                    onClick={() => onUpdate({ onlyLedgerLines: true })}
+                    aria-pressed={settings.onlyLedgerLines}
+                  >
+                    Ledger Lines
+                  </button>
+                </div>
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label} id="ledger-lines-label">
+                  Max Ledger Lines: {settings.maxLedgerLines}
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="6"
+                  value={settings.maxLedgerLines}
+                  onChange={(e) => onUpdate({ maxLedgerLines: parseInt(e.target.value) })}
+                  className={styles.range}
+                  aria-labelledby="ledger-lines-label"
+                />
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label} id="time-limit-label">
+                  Time Limit: {settings.timeLimitEnabled ? `${settings.timeLimitSeconds} seconds` : 'Off'}
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="31"
+                  value={settings.timeLimitEnabled ? settings.timeLimitSeconds : 31}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    if (val === 31) {
+                      onUpdate({ timeLimitEnabled: false });
+                    } else {
+                      onUpdate({ timeLimitEnabled: true, timeLimitSeconds: val });
+                    }
+                  }}
+                  className={styles.range}
+                  aria-labelledby="time-limit-label"
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
