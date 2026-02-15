@@ -7,6 +7,7 @@ import { Settings } from './components/Settings/Settings';
 import { NoteRendererSkeleton } from './components/NoteRenderer/NoteRendererSkeleton';
 import { useFlashcardGame } from './hooks/useFlashcardGame';
 import { usePracticeTracker } from './hooks/usePracticeTracker';
+import { useKeyboardBindings } from './hooks/useKeyboardBindings';
 import styles from './App.module.css';
 
 const NoteRenderer = React.lazy(() =>
@@ -50,6 +51,23 @@ function App() {
 
   const { totalSeconds, thisWeekSeconds } = usePracticeTracker(!isSettingsOpen);
 
+  const handleTap = () => {
+    if (!isAnswerRevealed) {
+      revealAnswer();
+    }
+  };
+
+  useKeyboardBindings({
+    isEnabled: !isSettingsOpen,
+    isAnswerRevealed,
+    isTimeExpired,
+    onTap: handleTap,
+    onCorrect: markCorrect,
+    onIncorrect: markIncorrect,
+    onTimeoutContinue: handleTimeoutContinue,
+    onReset: resetGame,
+  });
+
   useEffect(() => {
     if (isReviewFinished) {
       const timer = setTimeout(() => {
@@ -58,12 +76,6 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [isReviewFinished, clearFinished]);
-
-  const handleTap = () => {
-    if (!isAnswerRevealed) {
-      revealAnswer();
-    }
-  };
 
   return (
     <>

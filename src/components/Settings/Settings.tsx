@@ -38,7 +38,16 @@ export function Settings({
           Ledger
         </h1>
 
-        <button className={styles.startButton} onClick={onStart}>
+        <button
+          className={styles.startButton}
+          onClick={onStart}
+          onKeyDown={(e) => {
+            if (e.key === ' ' || e.key === 'Enter') {
+              e.preventDefault();
+              onStart();
+            }
+          }}
+        >
           Start Game
         </button>
 
