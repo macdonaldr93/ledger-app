@@ -172,3 +172,13 @@
   align-items: center;
   gap: var(--spacing-xs);
 }
+
+.footer span {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.heartIcon {
+  color: #d32f2f;
+}

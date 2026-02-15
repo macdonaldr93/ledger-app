@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Heart } from 'lucide-react';
 import clsx from 'clsx';
 import type { GameSettings } from '../../types/musical';
 import { formatDuration } from '../../utils/timeUtils';
@@ -156,7 +156,9 @@ export function Settings({
         </div>
       </div>
       <footer className={styles.footer}>
-        <span>Made with ❤️ for Jenn</span>
+        <span>
+          Made with <Heart size={14} className={styles.heartIcon} fill="currentColor" /> for Jenn
+        </span>
       </footer>
     </div>
   );
