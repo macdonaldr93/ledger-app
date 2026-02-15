@@ -9,6 +9,8 @@
   margin: 0 auto;
   padding: 0;
   flex: 1;
+  min-height: 0;
+  overflow: hidden;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
