@@ -6,7 +6,7 @@ import { useNoteSelection } from './useNoteSelection';
 import { useTimer } from './useTimer';
 import { useReviewMode } from './useReviewMode';
 
-export function useFlashcardGame(initialSettings: GameSettings) {
+export function useFlashcardGame(initialSettings: GameSettings, height?: number) {
   const { settings, isSettingsOpen, updateSettings, openSettings, closeSettings } =
     useSettings(initialSettings);
   const { score, incrementCorrect, incrementTotal, resetScore } = useScore();
@@ -17,7 +17,7 @@ export function useFlashcardGame(initialSettings: GameSettings) {
     nextNote,
     setNote,
     revealAnswer: revealInternal,
-  } = useNoteSelection(settings);
+  } = useNoteSelection(settings, height);
   const [isTimeExpired, setIsTimeExpired] = useState(false);
 
   const {

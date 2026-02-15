@@ -89,6 +89,13 @@ A distraction-free, high-accuracy musical flashcard app that works flawlessly on
 - Integrated `date-fns` for accurate weekly period calculations.
 - Implemented human-readable duration formatting supporting seconds, minutes, hours, and days.
 
+### 12. Responsive Constraints
+
+- Implemented dynamic ledger line constraints for ultra-small displays (e.g., Samsung Z-Flip front screen).
+- Added logic to automatically cap max ledger lines to 3 when the app height is 380px or less.
+- Updated Settings UI to provide visual feedback ("constrained") when this limit is active.
+- Integrated `useWindowSize` to ensure the game adapts in real-time to resizing or orientation changes.
+
 ## Architectural Notes
 
 ### Screen Constraints

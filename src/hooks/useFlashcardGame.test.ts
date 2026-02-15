@@ -188,4 +188,23 @@ describe('useFlashcardGame', () => {
     expect(result.current.timerTimeLeft).toBe(10);
     vi.useRealTimers();
   });
+
+  it('should pass height to note selection and constrain ledger lines', () => {
+    const manyLedgerLines: GameSettings = { ...initialSettings, maxLedgerLines: 6 };
+    // Treble max with 6 lines = 10 + 12 = 22
+    // Treble max with 3 lines = 10 + 6 = 16
+
+    const { result } = renderHook(() => useFlashcardGame(manyLedgerLines, 300));
+
+    act(() => {
+      result.current.startGame();
+    });
+
+    for (let i = 0; i < 50; i++) {
+      act(() => {
+        result.current.nextNote();
+      });
+      expect(result.current.currentNote.diatonicStep).toBeLessThanOrEqual(16);
+    }
+  });
 });

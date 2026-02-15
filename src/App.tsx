@@ -41,13 +41,16 @@ function App() {
     updateSettings,
     toggleReview,
     clearFinished,
-  } = useFlashcardGame({
-    clef: 'treble',
-    maxLedgerLines: 1,
-    onlyLedgerLines: false,
-    timeLimitEnabled: false,
-    timeLimitSeconds: 10,
-  });
+  } = useFlashcardGame(
+    {
+      clef: 'treble',
+      maxLedgerLines: 1,
+      onlyLedgerLines: false,
+      timeLimitEnabled: false,
+      timeLimitSeconds: 10,
+    },
+    height
+  );
 
   const { totalSeconds, thisWeekSeconds } = usePracticeTracker(!isSettingsOpen);
 
@@ -130,6 +133,7 @@ function App() {
           isOpen={isSettingsOpen}
           totalSeconds={totalSeconds}
           thisWeekSeconds={thisWeekSeconds}
+          height={height}
         />
       </div>
     </>

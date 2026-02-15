@@ -55,4 +55,38 @@ describe('useNoteSelection', () => {
 
     randomSpy.mockRestore();
   });
+
+  it('should constrain max ledger lines if height is 380 or less', () => {
+    const manyLedgerLines: GameSettings = { ...settings, maxLedgerLines: 6 };
+
+    // Height 300 (constrained)
+    const { result: res1 } = renderHook(() => useNoteSelection(manyLedgerLines, 300));
+
+    // We can't easily check the internal state of getRandomNote call without spying
+    // but we can check if the generated note is within the constrained range.
+    // Max step for treble with 3 ledger lines is 10 + 3*2 = 16.
+    // With 6 ledger lines it would be 10 + 6*2 = 22.
+
+    for (let i = 0; i < 50; i++) {
+      act(() => {
+        res1.current.nextNote();
+      });
+      expect(res1.current.currentNote.diatonicStep).toBeLessThanOrEqual(16);
+      expect(res1.current.currentNote.diatonicStep).toBeGreaterThanOrEqual(-4);
+    }
+
+    // Height 500 (not constrained)
+    const { result: res2 } = renderHook(() => useNoteSelection(manyLedgerLines, 500));
+    let sawHighNote = false;
+    for (let i = 0; i < 100; i++) {
+      act(() => {
+        res2.current.nextNote();
+      });
+      if (res2.current.currentNote.diatonicStep > 16) {
+        sawHighNote = true;
+        break;
+      }
+    }
+    expect(sawHighNote).toBe(true);
+  });
 });

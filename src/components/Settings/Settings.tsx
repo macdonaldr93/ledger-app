@@ -12,6 +12,7 @@ interface SettingsProps {
   isOpen: boolean;
   totalSeconds?: number;
   thisWeekSeconds?: number;
+  height?: number;
 }
 
 export function Settings({
@@ -21,8 +22,12 @@ export function Settings({
   isOpen,
   totalSeconds = 0,
   thisWeekSeconds = 0,
+  height,
 }: SettingsProps) {
   const [isSettingsExpanded, setIsSettingsExpanded] = useState(false);
+
+  const isConstrained = height !== undefined && height <= 380 && settings.maxLedgerLines > 3;
+  const effectiveMaxLedgerLines = isConstrained ? 3 : settings.maxLedgerLines;
 
   if (!isOpen) return null;
 
@@ -113,7 +118,7 @@ export function Settings({
 
               <div className={styles.field}>
                 <label className={styles.label}>
-                  Max Ledger Lines: {settings.maxLedgerLines}
+                  Max Ledger Lines: {effectiveMaxLedgerLines}
                   <input
                     type="range"
                     min="0"
