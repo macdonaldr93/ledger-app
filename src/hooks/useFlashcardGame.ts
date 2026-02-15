@@ -16,7 +16,7 @@ export function useFlashcardGame(initialSettings: GameSettings) {
     setIsTimeExpired(true);
   }, [revealAnswer]);
 
-  const { progress, reset: resetTimer } = useTimer(
+  const { progress, isRunning, timeLeft, reset: resetTimer } = useTimer(
     settings.timeLimitEnabled && !isAnswerRevealed && !isSettingsOpen,
     settings.timeLimitSeconds,
     handleTimeout
@@ -59,6 +59,8 @@ export function useFlashcardGame(initialSettings: GameSettings) {
     isAnswerRevealed,
     isTimeExpired,
     timerProgress: progress,
+    timerIsRunning: isRunning,
+    timerTimeLeft: timeLeft,
     settings,
     score,
     isSettingsOpen,

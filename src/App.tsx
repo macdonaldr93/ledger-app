@@ -13,6 +13,8 @@ function App() {
     isAnswerRevealed,
     isTimeExpired,
     timerProgress,
+    timerIsRunning,
+    timerTimeLeft,
     settings,
     score,
     isSettingsOpen,
@@ -41,6 +43,8 @@ function App() {
     <div className={styles.app}>
       <ProgressBar 
         progress={timerProgress} 
+        isRunning={timerIsRunning}
+        timeLeft={timerTimeLeft}
         visible={settings.timeLimitEnabled && !isSettingsOpen && !isAnswerRevealed} 
       />
       <header className={styles.header}>

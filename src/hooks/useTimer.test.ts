@@ -18,11 +18,17 @@ describe('useTimer', () => {
   });
 
   it('should decrease timeLeft over time', () => {
-    const { result } = renderHook(() => useTimer(true, 10, () => {}));
+    const { result, rerender } = renderHook(({ enabled }) => useTimer(enabled, 10, () => {}), {
+      initialProps: { enabled: true }
+    });
     
     act(() => {
       vi.advanceTimersByTime(1000);
     });
+    
+    // In the new implementation, timeLeft only updates when paused or expired
+    // to allow CSS to handle smoothness.
+    rerender({ enabled: false });
     
     expect(result.current.timeLeft).toBeLessThan(10);
     expect(result.current.progress).toBeLessThan(1);
@@ -40,12 +46,15 @@ describe('useTimer', () => {
   });
 
   it('should reset time', () => {
-    const { result } = renderHook(() => useTimer(true, 10, () => {}));
+    const { result, rerender } = renderHook(({ enabled }) => useTimer(enabled, 10, () => {}), {
+      initialProps: { enabled: true }
+    });
     
     act(() => {
       vi.advanceTimersByTime(5000);
     });
     
+    rerender({ enabled: false });
     expect(result.current.timeLeft).toBeLessThan(10);
     
     act(() => {
