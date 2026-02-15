@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import styles from './ProgressBar.module.css';
 
 interface ProgressBarProps {
@@ -9,8 +10,6 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar({ progress, isRunning, timeLeft, visible }: ProgressBarProps) {
-  if (!visible) return <div className={styles.container} />;
-
   const style: React.CSSProperties = isRunning
     ? {
         transform: 'scaleX(0)',
@@ -22,7 +21,7 @@ export function ProgressBar({ progress, isRunning, timeLeft, visible }: Progress
       };
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, visible && styles.active)}>
       <div className={styles.bar} style={style} />
     </div>
   );

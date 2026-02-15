@@ -162,4 +162,30 @@ describe('useFlashcardGame', () => {
     expect(result.current.isReviewMode).toBe(false);
     expect(result.current.reviewQueueSize).toBe(0);
   });
+
+  it('should reset timer when answer is revealed', () => {
+    vi.useFakeTimers();
+    const settingsWithTimer = { ...initialSettings, timeLimitEnabled: true };
+    const { result } = renderHook(() => useFlashcardGame(settingsWithTimer));
+
+    act(() => {
+      result.current.startGame();
+    });
+
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+
+    // In useTimer, timeLeft only updates when paused/stopped
+    // But since startGame sets isSettingsOpen to false, it starts running.
+    // To check timeLeft, we need to "pause" it or check progress if it were JS-driven.
+    // Actually, useTimer updates timeLeft when isActuallyRunning becomes false.
+
+    act(() => {
+      result.current.revealAnswer();
+    });
+
+    expect(result.current.timerTimeLeft).toBe(10);
+    vi.useRealTimers();
+  });
 });

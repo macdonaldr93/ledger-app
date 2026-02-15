@@ -92,14 +92,13 @@ function App() {
           />
         )}
       </Suspense>
+      <ProgressBar
+        progress={timerProgress}
+        isRunning={timerIsRunning}
+        timeLeft={timerTimeLeft}
+        visible={settings.timeLimitEnabled && !isSettingsOpen && !isAnswerRevealed}
+      />
       <div className={styles.app}>
-        <ProgressBar
-          progress={timerProgress}
-          isRunning={timerIsRunning}
-          timeLeft={timerTimeLeft}
-          visible={settings.timeLimitEnabled && !isSettingsOpen && !isAnswerRevealed}
-        />
-
         <main className={styles.main}>
           <div className={styles.topRow}>
             <Scoreboard

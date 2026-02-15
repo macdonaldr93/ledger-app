@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import type { GameSettings } from '../types/musical';
 import { useScore } from './useScore';
 import { useSettings } from './useSettings';
@@ -10,8 +10,14 @@ export function useFlashcardGame(initialSettings: GameSettings) {
   const { settings, isSettingsOpen, updateSettings, openSettings, closeSettings } =
     useSettings(initialSettings);
   const { score, incrementCorrect, incrementTotal, resetScore } = useScore();
-  const { currentNote, currentClef, isAnswerRevealed, nextNote, setNote, revealAnswer } =
-    useNoteSelection(settings);
+  const {
+    currentNote,
+    currentClef,
+    isAnswerRevealed,
+    nextNote,
+    setNote,
+    revealAnswer: revealInternal,
+  } = useNoteSelection(settings);
   const [isTimeExpired, setIsTimeExpired] = useState(false);
 
   const {
@@ -29,10 +35,13 @@ export function useFlashcardGame(initialSettings: GameSettings) {
     clearFinished,
   } = useReviewMode();
 
+  const resetTimerRef = useRef<() => void>(() => {});
+
   const handleTimeout = useCallback(() => {
-    revealAnswer();
+    revealInternal();
     setIsTimeExpired(true);
-  }, [revealAnswer]);
+    resetTimerRef.current();
+  }, [revealInternal]);
 
   const {
     progress,
@@ -44,6 +53,15 @@ export function useFlashcardGame(initialSettings: GameSettings) {
     settings.timeLimitSeconds,
     handleTimeout
   );
+
+  useEffect(() => {
+    resetTimerRef.current = resetTimer;
+  }, [resetTimer]);
+
+  const revealAnswer = useCallback(() => {
+    revealInternal();
+    resetTimer();
+  }, [revealInternal, resetTimer]);
 
   const handleNextNote = useCallback(() => {
     if (isReviewMode && currentReviewNote) {
