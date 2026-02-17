@@ -1,21 +1,23 @@
-import { RotateCcw, ListX } from 'lucide-react';
+import { RotateCcw, ListX, Pause } from 'lucide-react';
 import clsx from 'clsx';
 import styles from './Scoreboard.module.css';
 
 interface ScoreboardProps {
   score: { correct: number; total: number };
-  onReset: () => void;
+  onRestart: () => void;
   canReview: boolean;
   isReviewMode: boolean;
   onReview: () => void;
+  onPause: () => void;
 }
 
 export function Scoreboard({
   score,
-  onReset,
+  onRestart,
   canReview,
   isReviewMode,
   onReview,
+  onPause,
 }: ScoreboardProps) {
   return (
     <div className={styles.header}>
@@ -23,9 +25,6 @@ export function Scoreboard({
         {score.correct} / {score.total}
       </div>
       <div className={styles.actions}>
-        <button className={styles.actionButton} onClick={onReset} aria-label="Reset game">
-          <RotateCcw size={24} />
-        </button>
         <button
           className={clsx(styles.actionButton, isReviewMode && styles.active)}
           onClick={onReview}
@@ -33,6 +32,12 @@ export function Scoreboard({
           aria-label="Review missed notes"
         >
           <ListX size={24} />
+        </button>
+        <button className={styles.actionButton} onClick={onPause} aria-label="Pause game">
+          <Pause size={24} />
+        </button>
+        <button className={styles.actionButton} onClick={onRestart} aria-label="Restart game">
+          <RotateCcw size={24} />
         </button>
       </div>
     </div>

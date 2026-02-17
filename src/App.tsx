@@ -40,6 +40,7 @@ function App() {
     handleTimeoutContinue,
     startGame,
     resumeGame,
+    pauseGame,
     resetGame,
     updateSettings,
     toggleReview,
@@ -110,10 +111,11 @@ function App() {
           <div className={styles.topRow}>
             <Scoreboard
               score={score}
-              onReset={resetGame}
+              onRestart={startGame}
               canReview={canReview}
               isReviewMode={isReviewMode}
               onReview={toggleReview}
+              onPause={pauseGame}
             />
           </div>
           <Suspense fallback={<NoteRendererSkeleton />}>

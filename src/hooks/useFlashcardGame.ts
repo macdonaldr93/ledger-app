@@ -200,6 +200,10 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     setIsPaused(false);
   }, []);
 
+  const pauseGame = useCallback(() => {
+    setIsPaused(true);
+  }, []);
+
   const resetGame = useCallback(() => {
     openSettings();
   }, [openSettings]);
@@ -227,6 +231,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     handleTimeoutContinue,
     startGame,
     resumeGame,
+    pauseGame,
     resetGame,
     updateSettings,
     toggleReview,

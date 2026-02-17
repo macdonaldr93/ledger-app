@@ -118,6 +118,28 @@ describe('useFlashcardGame', () => {
     expect(result.current.canReview).toBe(false);
   });
 
+  it('should handle pause and resume', () => {
+    const { result } = renderHook(() => useFlashcardGame(initialSettings));
+
+    act(() => {
+      result.current.startGame();
+    });
+
+    expect(result.current.isPaused).toBe(false);
+
+    act(() => {
+      result.current.pauseGame();
+    });
+
+    expect(result.current.isPaused).toBe(true);
+
+    act(() => {
+      result.current.resumeGame();
+    });
+
+    expect(result.current.isPaused).toBe(false);
+  });
+
   it('should handle multiple notes in review mode', () => {
     const randomSpy = vi.spyOn(Math, 'random');
     const { result } = renderHook(() => useFlashcardGame(initialSettings));
