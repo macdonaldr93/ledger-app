@@ -5,12 +5,20 @@ import styles from './Scoreboard.module.css';
 interface ScoreboardProps {
   score: { correct: number; total: number };
   onReset: () => void;
-  canReview?: boolean;
-  isReviewMode?: boolean;
-  onReview?: () => void;
+  canReview: boolean;
+  isReviewMode: boolean;
+  onReview: () => void;
+  reviewCount: number;
 }
 
-export function Scoreboard({ score, onReset, canReview, isReviewMode, onReview }: ScoreboardProps) {
+export function Scoreboard({
+  score,
+  onReset,
+  canReview,
+  isReviewMode,
+  onReview,
+  reviewCount,
+}: ScoreboardProps) {
   return (
     <div className={styles.header}>
       <div className={styles.score}>
@@ -20,15 +28,15 @@ export function Scoreboard({ score, onReset, canReview, isReviewMode, onReview }
         <button className={styles.actionButton} onClick={onReset} aria-label="Reset game">
           <RotateCcw size={24} />
         </button>
-        {canReview && (
-          <button
-            className={clsx(styles.actionButton, isReviewMode && styles.active)}
-            onClick={onReview}
-            aria-label="Review missed notes"
-          >
-            <ListX size={24} />
-          </button>
-        )}
+        <button
+          className={clsx(styles.actionButton, isReviewMode && styles.active)}
+          onClick={onReview}
+          disabled={!canReview}
+          aria-label="Review missed notes"
+        >
+          <ListX size={24} />
+          {reviewCount > 0 && <span className={styles.badge}>{reviewCount}</span>}
+        </button>
       </div>
     </div>
   );

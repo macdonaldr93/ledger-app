@@ -76,6 +76,7 @@ describe('useFlashcardGame', () => {
       result.current.markIncorrect();
     });
 
+    expect(result.current.incorrectNotesCount).toBe(1);
     expect(result.current.canReview).toBe(true);
     expect(result.current.isReviewMode).toBe(false);
 
@@ -84,6 +85,7 @@ describe('useFlashcardGame', () => {
     });
 
     expect(result.current.isReviewMode).toBe(true);
+    expect(result.current.incorrectNotesCount).toBe(0);
     expect(result.current.reviewQueueSize).toBe(1);
     expect(result.current.currentNote).toEqual(firstNote);
     expect(result.current.currentClef).toEqual(firstClef);
