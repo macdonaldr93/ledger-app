@@ -128,4 +128,31 @@ describe('useFlashcardGame persistence', () => {
     // Note selection hook initializes with provided note
     expect(result.current.currentNote.name).toBe('E');
   });
+
+  it('should start in paused state when persisted state exists', () => {
+    const mockState = {
+      score: { correct: 0, total: 0 },
+      noteSelection: {
+        note: { name: 'E', octave: 4, diatonicStep: 2 },
+        clef: 'treble',
+        isAnswerRevealed: false,
+      },
+      review: {
+        incorrectNotes: [],
+        reviewQueue: [],
+        isReviewMode: false,
+      },
+    };
+
+    localStorage.setItem('ledger-game-v1', JSON.stringify(mockState));
+
+    const { result } = renderHook(() => useFlashcardGame(initialSettings));
+    expect(result.current.isPaused).toBe(true);
+    expect(result.current.isSettingsOpen).toBe(false);
+
+    act(() => {
+      result.current.resumeGame();
+    });
+    expect(result.current.isPaused).toBe(false);
+  });
 });

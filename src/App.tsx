@@ -8,6 +8,7 @@ import { NoteRendererSkeleton } from './components/NoteRenderer/NoteRendererSkel
 import { useFlashcardGame } from './hooks/useFlashcardGame';
 import { usePracticeTracker } from './hooks/usePracticeTracker';
 import { useKeyboardBindings } from './hooks/useKeyboardBindings';
+import { ResumeOverlay } from './components/ResumeOverlay/ResumeOverlay';
 import styles from './App.module.css';
 
 const NoteRenderer = React.lazy(() =>
@@ -23,6 +24,7 @@ function App() {
     currentClef,
     isAnswerRevealed,
     isTimeExpired,
+    isPaused,
     timerProgress,
     timerIsRunning,
     timerTimeLeft,
@@ -37,6 +39,7 @@ function App() {
     markIncorrect,
     handleTimeoutContinue,
     startGame,
+    resumeGame,
     resetGame,
     updateSettings,
     toggleReview,
@@ -52,16 +55,16 @@ function App() {
     height
   );
 
-  const { totalSeconds, thisWeekSeconds } = usePracticeTracker(!isSettingsOpen);
+  const { totalSeconds, thisWeekSeconds } = usePracticeTracker(!isSettingsOpen && !isPaused);
 
   const handleTap = () => {
-    if (!isAnswerRevealed) {
+    if (!isAnswerRevealed && !isPaused) {
       revealAnswer();
     }
   };
 
   useKeyboardBindings({
-    isEnabled: !isSettingsOpen,
+    isEnabled: !isSettingsOpen && !isPaused,
     isAnswerRevealed,
     isTimeExpired,
     onTap: handleTap,
@@ -99,8 +102,9 @@ function App() {
         progress={timerProgress}
         isRunning={timerIsRunning}
         timeLeft={timerTimeLeft}
-        visible={settings.timeLimitEnabled && !isSettingsOpen && !isAnswerRevealed}
+        visible={settings.timeLimitEnabled && !isSettingsOpen && !isAnswerRevealed && !isPaused}
       />
+      <ResumeOverlay isVisible={isPaused && !isSettingsOpen} onResume={resumeGame} />
       <div className={styles.app}>
         <main className={styles.main}>
           <div className={styles.topRow}>

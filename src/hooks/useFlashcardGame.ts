@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { GameSettings } from '../types/musical';
 import { useScore } from './useScore';
 import { useSettings } from './useSettings';
@@ -10,8 +10,12 @@ import { useGameTimer } from './useGameTimer';
 export function useFlashcardGame(initialSettings: GameSettings, height?: number) {
   const { initialPersistedState, saveState, flushSave } = useGameStatePersistence();
 
-  const { settings, isSettingsOpen, updateSettings, openSettings, closeSettings } =
-    useSettings(initialSettings);
+  const { settings, isSettingsOpen, updateSettings, openSettings, closeSettings } = useSettings(
+    initialSettings,
+    !initialPersistedState
+  );
+
+  const [isPaused, setIsPaused] = useState(!!initialPersistedState);
 
   const { score, incrementCorrect, incrementTotal, resetScore } = useScore(
     initialPersistedState?.score
@@ -47,7 +51,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     useGameTimer(
       settings.timeLimitEnabled,
       settings.timeLimitSeconds,
-      isAnswerRevealed || isSettingsOpen,
+      isAnswerRevealed || isSettingsOpen || isPaused,
       revealInternal
     );
 
@@ -184,12 +188,17 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
 
   const startGame = useCallback(() => {
     closeSettings();
+    setIsPaused(false);
     resetScore();
     resetReview();
     nextNote();
     setIsTimeExpired(false);
     resetTimer();
   }, [closeSettings, resetScore, resetReview, nextNote, setIsTimeExpired, resetTimer]);
+
+  const resumeGame = useCallback(() => {
+    setIsPaused(false);
+  }, []);
 
   const resetGame = useCallback(() => {
     openSettings();
@@ -200,6 +209,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     currentClef,
     isAnswerRevealed,
     isTimeExpired,
+    isPaused,
     timerProgress: progress,
     timerIsRunning: isRunning,
     timerTimeLeft: timeLeft,
@@ -216,6 +226,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     markIncorrect,
     handleTimeoutContinue,
     startGame,
+    resumeGame,
     resetGame,
     updateSettings,
     toggleReview,

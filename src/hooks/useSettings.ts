@@ -3,7 +3,7 @@ import type { GameSettings } from '../types/musical';
 
 const SETTINGS_KEY = 'ledger_settings';
 
-export function useSettings(initialSettings: GameSettings) {
+export function useSettings(initialSettings: GameSettings, initialOpen = true) {
   const [settings, setSettings] = useState<GameSettings>(() => {
     const saved = localStorage.getItem(SETTINGS_KEY);
     if (saved) {
@@ -16,7 +16,7 @@ export function useSettings(initialSettings: GameSettings) {
     return initialSettings;
   });
 
-  const [isSettingsOpen, setIsSettingsOpen] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(initialOpen);
 
   useEffect(() => {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
