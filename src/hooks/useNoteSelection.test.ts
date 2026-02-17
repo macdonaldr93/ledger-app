@@ -89,4 +89,17 @@ describe('useNoteSelection', () => {
     }
     expect(sawHighNote).toBe(true);
   });
+
+  it('should initialize with provided state', () => {
+    const initialState = {
+      note: { name: 'G' as const, octave: 4, diatonicStep: 4 },
+      clef: 'treble' as const,
+      isAnswerRevealed: true,
+    };
+    const { result } = renderHook(() => useNoteSelection(settings, undefined, initialState));
+
+    expect(result.current.currentNote).toEqual(initialState.note);
+    expect(result.current.currentClef).toBe(initialState.clef);
+    expect(result.current.isAnswerRevealed).toBe(true);
+  });
 });

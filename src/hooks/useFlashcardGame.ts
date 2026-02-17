@@ -1,15 +1,22 @@
-import { useCallback, useState, useRef, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { GameSettings } from '../types/musical';
 import { useScore } from './useScore';
 import { useSettings } from './useSettings';
 import { useNoteSelection } from './useNoteSelection';
-import { useTimer } from './useTimer';
 import { useReviewMode } from './useReviewMode';
+import { useGameStatePersistence } from './useGameStatePersistence';
+import { useGameTimer } from './useGameTimer';
 
 export function useFlashcardGame(initialSettings: GameSettings, height?: number) {
+  const { initialPersistedState, saveState, flushSave } = useGameStatePersistence();
+
   const { settings, isSettingsOpen, updateSettings, openSettings, closeSettings } =
     useSettings(initialSettings);
-  const { score, incrementCorrect, incrementTotal, resetScore } = useScore();
+
+  const { score, incrementCorrect, incrementTotal, resetScore } = useScore(
+    initialPersistedState?.score
+  );
+
   const {
     currentNote,
     currentClef,
@@ -17,8 +24,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     nextNote,
     setNote,
     revealAnswer: revealInternal,
-  } = useNoteSelection(settings, height);
-  const [isTimeExpired, setIsTimeExpired] = useState(false);
+  } = useNoteSelection(settings, height, initialPersistedState?.noteSelection);
 
   const {
     isReviewMode,
@@ -26,6 +32,8 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     canReview,
     reviewQueueSize,
     currentReviewNote,
+    incorrectNotes,
+    reviewQueue,
     addIncorrectNote,
     startReview: initiateReview,
     stopReview,
@@ -33,30 +41,60 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     requeueCurrent,
     resetReview,
     clearFinished,
-  } = useReviewMode();
+  } = useReviewMode(initialPersistedState?.review);
 
-  const resetTimerRef = useRef<() => void>(() => {});
-
-  const handleTimeout = useCallback(() => {
-    revealInternal();
-    setIsTimeExpired(true);
-    resetTimerRef.current();
-  }, [revealInternal]);
-
-  const {
-    progress,
-    isRunning,
-    timeLeft,
-    reset: resetTimer,
-  } = useTimer(
-    settings.timeLimitEnabled && !isAnswerRevealed && !isSettingsOpen,
-    settings.timeLimitSeconds,
-    handleTimeout
-  );
+  const { isTimeExpired, setIsTimeExpired, progress, isRunning, timeLeft, resetTimer } =
+    useGameTimer(
+      settings.timeLimitEnabled,
+      settings.timeLimitSeconds,
+      isAnswerRevealed || isSettingsOpen,
+      revealInternal
+    );
 
   useEffect(() => {
-    resetTimerRef.current = resetTimer;
-  }, [resetTimer]);
+    saveState({
+      score,
+      noteSelection: {
+        note: currentNote,
+        clef: currentClef,
+        isAnswerRevealed,
+      },
+      review: {
+        incorrectNotes,
+        reviewQueue,
+        isReviewMode,
+      },
+    });
+  }, [
+    score,
+    currentNote,
+    currentClef,
+    isAnswerRevealed,
+    incorrectNotes,
+    reviewQueue,
+    isReviewMode,
+    saveState,
+  ]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        flushSave();
+      }
+    };
+
+    const handlePageHide = () => {
+      flushSave();
+    };
+
+    window.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pagehide', handlePageHide);
+
+    return () => {
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pagehide', handlePageHide);
+    };
+  }, [flushSave]);
 
   const revealAnswer = useCallback(() => {
     revealInternal();
@@ -71,7 +109,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     }
     setIsTimeExpired(false);
     resetTimer();
-  }, [isReviewMode, currentReviewNote, nextNote, setNote, resetTimer]);
+  }, [isReviewMode, currentReviewNote, nextNote, setNote, setIsTimeExpired, resetTimer]);
 
   const markCorrect = useCallback(() => {
     if (isReviewMode) {
@@ -87,7 +125,16 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
       incrementCorrect();
       handleNextNote();
     }
-  }, [isReviewMode, moveToNext, nextNote, setNote, incrementCorrect, handleNextNote, resetTimer]);
+  }, [
+    isReviewMode,
+    moveToNext,
+    nextNote,
+    setNote,
+    incrementCorrect,
+    handleNextNote,
+    setIsTimeExpired,
+    resetTimer,
+  ]);
 
   const markIncorrect = useCallback(() => {
     if (isReviewMode) {
@@ -111,6 +158,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     incrementTotal,
     handleNextNote,
     setNote,
+    setIsTimeExpired,
     resetTimer,
   ]);
 
@@ -132,7 +180,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
         resetTimer();
       }
     }
-  }, [isReviewMode, stopReview, initiateReview, setNote, nextNote, resetTimer]);
+  }, [isReviewMode, stopReview, initiateReview, setNote, nextNote, setIsTimeExpired, resetTimer]);
 
   const startGame = useCallback(() => {
     closeSettings();
@@ -141,7 +189,7 @@ export function useFlashcardGame(initialSettings: GameSettings, height?: number)
     nextNote();
     setIsTimeExpired(false);
     resetTimer();
-  }, [closeSettings, resetScore, resetReview, nextNote, resetTimer]);
+  }, [closeSettings, resetScore, resetReview, nextNote, setIsTimeExpired, resetTimer]);
 
   const resetGame = useCallback(() => {
     openSettings();

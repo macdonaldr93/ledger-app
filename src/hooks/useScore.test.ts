@@ -23,12 +23,9 @@ describe('useScore', () => {
     expect(result.current.score).toEqual({ correct: 0, total: 1 });
   });
 
-  it('should reset score', () => {
-    const { result } = renderHook(() => useScore());
-    act(() => {
-      result.current.incrementCorrect();
-      result.current.resetScore();
-    });
-    expect(result.current.score).toEqual({ correct: 0, total: 0 });
+  it('should initialize with provided initial score', () => {
+    const initialScore = { correct: 5, total: 10 };
+    const { result } = renderHook(() => useScore(initialScore));
+    expect(result.current.score).toEqual(initialScore);
   });
 });

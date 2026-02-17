@@ -164,4 +164,37 @@ describe('useReviewMode', () => {
 
     expect(result.current.isReviewFinished).toBe(false);
   });
+
+  it('should initialize with provided state', () => {
+    const initialState = {
+      incorrectNotes: [{ note: mockNote1, clef: mockClef }],
+      reviewQueue: [{ note: mockNote2, clef: mockClef }],
+      isReviewMode: true,
+    };
+    const { result } = renderHook(() => useReviewMode(initialState));
+
+    expect(result.current.isReviewMode).toBe(true);
+    expect(result.current.incorrectNotes).toEqual(initialState.incorrectNotes);
+    expect(result.current.reviewQueue).toEqual(initialState.reviewQueue);
+    expect(result.current.reviewQueueSize).toBe(1);
+    expect(result.current.currentReviewNote).toEqual({ note: mockNote2, clef: mockClef });
+  });
+
+  it('should update returned incorrectNotes and reviewQueue when they change', () => {
+    const { result } = renderHook(() => useReviewMode());
+
+    act(() => {
+      result.current.addIncorrectNote(mockNote1, mockClef);
+    });
+
+    expect(result.current.incorrectNotes).toHaveLength(1);
+    expect(result.current.incorrectNotes[0]).toEqual({ note: mockNote1, clef: mockClef });
+
+    act(() => {
+      result.current.startReview();
+    });
+
+    expect(result.current.incorrectNotes).toHaveLength(0);
+    expect(result.current.reviewQueue).toHaveLength(1);
+  });
 });

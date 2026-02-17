@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 
-export function useScore() {
-  const [score, setScore] = useState({ correct: 0, total: 0 });
+export function useScore(initialScore = { correct: 0, total: 0 }) {
+  const [score, setScore] = useState(initialScore);
 
   const incrementCorrect = useCallback(() => {
     setScore((prev) => ({ correct: prev.correct + 1, total: prev.total + 1 }));

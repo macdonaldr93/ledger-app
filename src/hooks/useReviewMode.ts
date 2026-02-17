@@ -1,10 +1,24 @@
 import { useState, useCallback, useMemo } from 'react';
 import type { Note, Clef } from '../types/musical';
 
-export function useReviewMode() {
-  const [incorrectNotes, setIncorrectNotes] = useState<{ note: Note; clef: Clef }[]>([]);
-  const [reviewQueue, setReviewQueue] = useState<{ note: Note; clef: Clef }[]>([]);
-  const [isReviewMode, setIsReviewMode] = useState(false);
+export function useReviewMode(
+  initialState: {
+    incorrectNotes: { note: Note; clef: Clef }[];
+    reviewQueue: { note: Note; clef: Clef }[];
+    isReviewMode: boolean;
+  } = {
+    incorrectNotes: [],
+    reviewQueue: [],
+    isReviewMode: false,
+  }
+) {
+  const [incorrectNotes, setIncorrectNotes] = useState<{ note: Note; clef: Clef }[]>(
+    initialState.incorrectNotes
+  );
+  const [reviewQueue, setReviewQueue] = useState<{ note: Note; clef: Clef }[]>(
+    initialState.reviewQueue
+  );
+  const [isReviewMode, setIsReviewMode] = useState(initialState.isReviewMode);
   const [isReviewFinished, setIsReviewFinished] = useState(false);
 
   const canReview = useMemo(
@@ -87,6 +101,8 @@ export function useReviewMode() {
     canReview,
     reviewQueueSize,
     currentReviewNote,
+    incorrectNotes,
+    reviewQueue,
     addIncorrectNote,
     startReview,
     stopReview,

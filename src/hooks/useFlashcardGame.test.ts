@@ -119,18 +119,23 @@ describe('useFlashcardGame', () => {
   });
 
   it('should handle multiple notes in review mode', () => {
+    const randomSpy = vi.spyOn(Math, 'random');
     const { result } = renderHook(() => useFlashcardGame(initialSettings));
 
     act(() => {
       result.current.startGame();
     });
 
+    // Mock random to get first note
+    randomSpy.mockReturnValue(0.1);
     const note1 = { ...result.current.currentNote };
 
     act(() => {
       result.current.markIncorrect();
     });
 
+    // Mock random to get a different second note
+    randomSpy.mockReturnValue(0.9);
     const note2 = { ...result.current.currentNote };
 
     act(() => {
@@ -161,6 +166,7 @@ describe('useFlashcardGame', () => {
 
     expect(result.current.isReviewMode).toBe(false);
     expect(result.current.reviewQueueSize).toBe(0);
+    randomSpy.mockRestore();
   });
 
   it('should reset timer when answer is revealed', () => {

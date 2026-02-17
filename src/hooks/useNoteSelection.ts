@@ -2,7 +2,11 @@ import { useState, useCallback } from 'react';
 import type { Clef, Note, GameSettings } from '../types/musical';
 import { getRandomNote } from '../utils/noteUtils';
 
-export function useNoteSelection(settings: GameSettings, height?: number) {
+export function useNoteSelection(
+  settings: GameSettings,
+  height?: number,
+  initialState?: { note: Note; clef: Clef; isAnswerRevealed: boolean }
+) {
   const generateNote = useCallback(
     (currentSettings: GameSettings): { note: Note; clef: Clef } => {
       const clef: Clef =
@@ -25,8 +29,8 @@ export function useNoteSelection(settings: GameSettings, height?: number) {
     [height]
   );
 
-  const [gameState, setGameState] = useState(() => generateNote(settings));
-  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
+  const [gameState, setGameState] = useState(() => initialState || generateNote(settings));
+  const [isAnswerRevealed, setIsAnswerRevealed] = useState(initialState?.isAnswerRevealed ?? false);
 
   const nextNote = useCallback(() => {
     setGameState(generateNote(settings));
